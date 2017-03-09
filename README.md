@@ -24,11 +24,18 @@ This application is a mix of a wiki and a simple social network: a user can publ
 - Users will be able to view existing pages. 
 
 ## Sprint 2
- 
-- User will be able to create a page.
-- User will be able to like a page.
-- User will be able to edit a page.
-- User will be able to follow other users.
+
+### Pages
+- User can create a page.
+- User can edit a page.
+- User can like a page.
+- User can dislike a page.
+
+### Users
+- User can see user profile pages.
+- User can follow other users.
+- User can unfollow other users.
+
  
 
 **Product Backlog**
