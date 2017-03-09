@@ -36,10 +36,11 @@ This application is a mix of a wiki and a simple social network: a user can publ
 - User can like a page.
 - User can dislike a page.
 
-##### Users
+#### Users
 - User can see user profile pages.
 - User can follow other users.
 - User can unfollow other users.
 
-**Product Backlog**
+#### Search 
+- User can search for users and pages.
 
