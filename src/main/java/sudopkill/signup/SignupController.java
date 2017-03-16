@@ -15,6 +15,7 @@ import sudopkill.support.web.Ajax;
 import sudopkill.support.web.MessageHelper;
 
 import javax.validation.Valid;
+import java.security.Principal;
 
 /**
  * Created by tanzeelrana on 3/4/2017.
@@ -28,7 +29,12 @@ class SignupController {
     private AccountService accountService;
 
     @GetMapping("signup")
-    String signup(Model model, @RequestHeader(value = "X-Requested-With", required = false) String requestedWith) {
+    String signup(Principal principal, Model model, @RequestHeader(value = "X-Requested-With", required = false) String requestedWith) {
+
+        if(principal != null){
+            return "home/homeSignedIn";
+        }
+
         model.addAttribute(new SignupForm());
         if (Ajax.isAjaxRequest(requestedWith)) {
             return SIGNUP_VIEW_NAME.concat(" :: signupForm");

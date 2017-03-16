@@ -3,12 +3,14 @@ package sudopkill.account;
 /**
  * Created by tanzeelrana on 3/5/2017.
  */
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import sudopkill.page.Page;
-import sudopkill.AuthProvider.AuthProvider;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import sudopkill.AuthProvider.AuthProvider;
+import sudopkill.page.Page;
 import javax.persistence.*;
+import java.sql.Date;
 import java.time.Instant;
+import java.util.Calendar;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -19,29 +21,30 @@ import java.util.Set;
 public class Account implements java.io.Serializable {
 
     @Id
-    @GeneratedValue
-    private Long id;
+    private String id;
 
     @Column(unique = true)
     private String email;
 
     @JsonIgnore
     private String password;
-    private String role = "ROLE_USER";
-    private Instant created = Instant.now();
     @Column(nullable = false)
     private String authProvider;
 
-    @OneToMany(cascade = CascadeType.ALL)
+    private String about = "";
+    private String name = "";
+    private String profilePicture = "http://ec2-52-11-47-52.us-west-2.compute.amazonaws.com/moodle/theme/image.php/clean/core/1475717594/u/f1";
+    private String role = "ROLE_USER";
+    private Instant created = Instant.now();
+    private Date created_at = new Date((Calendar.getInstance().getTime()).getTime());
+
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<Page> myPages = new HashSet<>();
 
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<Page> myLikes = new HashSet<>();
 
-    @OneToMany(cascade = CascadeType.ALL)
-    private Set<Account> myFollowing = new HashSet<>();
-
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private Set<Account> myFollowers = new HashSet<>();
 
     public Account() {}
@@ -51,9 +54,14 @@ public class Account implements java.io.Serializable {
         this.password = password;
         this.role = role;
         this.authProvider = authProvider;
+
+        if(authProvider == AuthProvider.LOCAL.toString()){
+            this.id = email;
+            this.name = email;
+        }
     }
 
-    public Long getId() {
+    public String getId() {
         return id;
     }
 
@@ -89,18 +97,17 @@ public class Account implements java.io.Serializable {
         return authProvider;
     }
 
+    @OneToMany(mappedBy = "ACCOUNT", cascade = CascadeType.ALL)
     public Set<Page> getMyPages() {
         return myPages;
     }
 
+    @OneToMany(mappedBy = "ACCOUNT", cascade = CascadeType.ALL)
     public Set<Page> getMyLikes() {
         return myLikes;
     }
 
-    public Set<Account> getMyFollowing() {
-        return myFollowing;
-    }
-
+    @OneToMany(mappedBy = "ACCOUNT")
     public Set<Account> getMyFollowers() {
         return myFollowers;
     }
@@ -117,11 +124,65 @@ public class Account implements java.io.Serializable {
         this.myLikes = myLikes;
     }
 
-    public void setMyFollowing(Set<Account> myFollowing) {
-        this.myFollowing = myFollowing;
-    }
-
     public void setMyFollowers(Set<Account> myFollowers) {
         this.myFollowers = myFollowers;
     }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getAbout() {
+        return about;
+    }
+
+    public void setAbout(String about) {
+        this.about = about;
+    }
+
+    public String getProfilePicture() {
+        return profilePicture;
+    }
+
+    public Set<Account> getMyFollowing(){
+        Set<Account> retVal = new HashSet<Account>();
+        return retVal;
+    }
+
+    public void setProfilePicture(String profilePicture) {
+        this.profilePicture = profilePicture;
+    }
+
+    public void addMyPages(Page page){
+        this.myPages.add(page);
+    }
+
+    public void addMyLikes(Page page){
+        this.myLikes.add(page);
+    }
+
+    public void addMyFollower(Account account){
+        this.myFollowers.add(account);
+    }
+
+    public void removeMyPages(Page page){
+        this.myPages.remove(page);
+    }
+
+    public void removeMyLikes(Page page){
+        this.myLikes.remove(page);
+    }
+
+    public void removeMyFollower(Account account){
+        this.myFollowers.remove(account);
+    }
+
 }

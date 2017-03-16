@@ -7,7 +7,6 @@ import sudopkill.account.Account;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import java.sql.Date;
 import java.util.LinkedHashMap;
 
 /**
@@ -36,7 +35,6 @@ public class GithubAccount extends Account {
     private String received_events_url;
     private String type;
     private Boolean site_admin;
-    private String name;
     private String company;
     private String blog;
     private String location;
@@ -46,8 +44,8 @@ public class GithubAccount extends Account {
     private int public_gists;
     private int followers;
     private int following;
-    private String created_at;
-    private String updated_at;
+//    private String created_at;
+//    private String updated_at;
 
     private String remoteAddress;
     private String sessionId;
@@ -65,14 +63,19 @@ public class GithubAccount extends Account {
         this.tokenValue = details.getTokenValue();
         this.tokenType = details.getTokenType();
 
-        this.setEmail((String)dataMap.get("email"));
         this.setPassword("");
         this.setRole("ROLE_USER");
         this.setAuthProvider(AuthProvider.GITHUB.toString());
+        this.setId( auth.getName() );
+        this.setName((String) dataMap.get("name"));
+        this.setEmail((String) dataMap.get("email"));
+        this.setAbout((String) dataMap.get("bio"));
+        this.setProfilePicture((String) dataMap.get("avatar_url"));
+
 
         this.github_id = (Integer) dataMap.get("id");
         this.login = (String) dataMap.get("login");
-        this.avatar_url = (String) dataMap.get("avatar_url");
+
         this.gravatar_id = (String) dataMap.get("gravatar_id");
         this.url = (String) dataMap.get("url");
         this.html_url = (String) dataMap.get("html_url");
@@ -87,7 +90,7 @@ public class GithubAccount extends Account {
         this.received_events_url = (String) dataMap.get("received_events_url");
         this.type = (String) dataMap.get("type");
         this.site_admin = (Boolean) dataMap.get("site_admin");
-        this.name = (String) dataMap.get("name");
+        this.avatar_url = (String) dataMap.get("avatar_url");
         this.company = (String) dataMap.get("company");
         this.blog = (String) dataMap.get("blog");
         this.location = (String) dataMap.get("location");
@@ -97,8 +100,8 @@ public class GithubAccount extends Account {
         this.public_gists = (Integer) dataMap.get("public_gists");
         this.followers = (Integer) dataMap.get("followers");
         this.following = (Integer) dataMap.get("following");
-        this.created_at = (String) dataMap.get("created_at");
-        this.updated_at = (String) dataMap.get("updated_at");
+//        this.created_at = (String) dataMap.get("created_at");
+//        this.updated_at = (String) dataMap.get("updated_at");
     }
 
     public int getGithub_id() {
@@ -169,10 +172,6 @@ public class GithubAccount extends Account {
         return site_admin;
     }
 
-    public String getName() {
-        return name;
-    }
-
     public String getCompany() {
         return company;
     }
@@ -209,13 +208,13 @@ public class GithubAccount extends Account {
         return following;
     }
 
-    public String getCreated_at() {
-        return created_at;
-    }
-
-    public String getUpdated_at() {
-        return updated_at;
-    }
+//    public String getCreated_at() {
+//        return created_at;
+//    }
+//
+//    public String getUpdated_at() {
+//        return updated_at;
+//    }
 
     public String getRemoteAddress() {
         return remoteAddress;

@@ -16,7 +16,6 @@ import javax.persistence.Entity;
 public class FacebookAccount extends Account {
 
     private String fb_id;
-    private String about;
     private String age_range;
     private String birthday;
     private String cover;
@@ -27,7 +26,6 @@ public class FacebookAccount extends Account {
     private String last_name;
     private String link;
     private String middle_name;
-    private String name;
     private String relationship_status;
     private String religion;
     private Float timezone;
@@ -65,13 +63,21 @@ public class FacebookAccount extends Account {
         this.tokenValue = details.getTokenValue();
         this.tokenType = details.getTokenType();
 
-        this.setEmail(userProfile.getId());
+
         this.setPassword("");
         this.setRole("ROLE_USER");
         this.setAuthProvider(AuthProvider.FACEBOOK.toString());
+        this.setName(userProfile.getName());
+        this.setId(  (String) auth.getName()  );
+        this.setEmail(userProfile.getEmail());
+        this.setAbout(userProfile.getAbout());
+        System.out.println("profile bio : " + userProfile.getAbout());
+        this.setProfilePicture("http://graph.facebook.com/" + userProfile.getId() + "/picture?type=square");
+
+        System.out.println("profile picture : " + this.getProfilePicture());
 
         this.fb_id = userProfile.getId();
-        this.about = userProfile.getAbout();
+
         this.age_range = userProfile.getAgeRange().name();
         this.birthday = userProfile.getBirthday();
         this.cover = userProfile.getCover().getSource();
@@ -82,7 +88,7 @@ public class FacebookAccount extends Account {
         this.last_name = userProfile.getLastName();
         this.link = userProfile.getLink();
         this.middle_name = userProfile.getMiddleName();
-        this.name = userProfile.getName();
+
         this.relationship_status = userProfile.getRelationshipStatus();
         this.religion = userProfile.getReligion();
         this.timezone = userProfile.getTimezone();
@@ -93,10 +99,6 @@ public class FacebookAccount extends Account {
 
     public String getFb_id() {
         return fb_id;
-    }
-
-    public String getAbout() {
-        return about;
     }
 
     public String getAge_range() {
@@ -137,10 +139,6 @@ public class FacebookAccount extends Account {
 
     public String getMiddle_name() {
         return middle_name;
-    }
-
-    public String getName() {
-        return name;
     }
 
     public String getRelationship_status() {

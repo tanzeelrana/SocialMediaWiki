@@ -4,7 +4,6 @@ package sudopkill.account;
  * Created by tanzeelrana on 3/5/2017.
  */
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.context.annotation.Scope;
 import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -20,6 +19,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import sudopkill.AuthProvider.AuthProvider;
+import sudopkill.page.Page;
 
 import javax.annotation.PostConstruct;
 import java.util.Collections;
@@ -27,6 +27,8 @@ import java.util.Collections;
 @Service
 @Scope(proxyMode = ScopedProxyMode.TARGET_CLASS)
 public class AccountService implements UserDetailsService {
+
+    private Account currentUser;
 
     @Autowired
     private AccountRepository accountRepository;
@@ -44,6 +46,12 @@ public class AccountService implements UserDetailsService {
     public Account save(Account account) {
         account.setPassword(passwordEncoder.encode(account.getPassword()));
         accountRepository.save(account);
+        return account;
+    }
+
+    @Transactional
+    public Account update(Account account){
+        account = accountRepository.save(account);
         return account;
     }
 
@@ -72,9 +80,26 @@ public class AccountService implements UserDetailsService {
         return new SimpleGrantedAuthority(account.getRole());
     }
 
-    public Account getUser(String email){
-        Account account = accountRepository.findOneByEmail(email);
+    public Account getUser(String id){
+        Account account = accountRepository.findOneById(id);
         return account;
+
     }
+
+    public void setCurrentUser(Account currentUser) {
+        System.out.println("current user has : " + currentUser.getMyFollowers().size() + " followers .");
+        this.currentUser = currentUser;
+    }
+
+    public Account getCurrentUser() {
+        return this.currentUser;
+    }
+
+    public void addMyPages(Page page){
+        if(this.currentUser != null){
+            this.currentUser.addMyPages(page);
+        }
+    }
+
 
 }

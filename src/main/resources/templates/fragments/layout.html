@@ -25,12 +25,18 @@
                     <a href="#about" th:href="@{/about}">About</a>
                 </li>
             </ul>
+
             <ul class="nav navbar-nav navbar-right">
                 <li th:if="${#authorization.expression('!isAuthenticated()')}">
                     <a href="/signin" th:href="@{/signin}">
                         <span class="glyphicon glyphicon-log-in" aria-hidden="true"></span>&nbsp;Sign in
                     </a>
                 </li>
+
+                <li th:if="${currentUser} != null" th:classappend="${module == 'account' ? 'active' : ''}">
+                    <a th:href="@{/account/}+${currentUser.getId()}" th:text ="${currentUser.getName()}"></a>
+                </li>
+
                 <li th:if="${#authorization.expression('isAuthenticated()')}">
                     <a href="/logout" th:href="@{#}" onclick="$('#form').submit();">
                         <span class="glyphicon glyphicon-log-out" aria-hidden="true"></span>&nbsp;Logout

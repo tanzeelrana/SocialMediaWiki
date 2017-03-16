@@ -62,6 +62,8 @@ public class Page {
         return content;
     }
 
+    @ManyToOne
+    @JoinColumn(name = "ACCOUNT_id")
     public Account getAuthor() {
         return author;
     }

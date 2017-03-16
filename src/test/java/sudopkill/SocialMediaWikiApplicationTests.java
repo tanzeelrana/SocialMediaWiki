@@ -6,10 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import sudopkill.AuthProvider.AuthProvider;
-import sudopkill.account.Account;
 import sudopkill.account.AccountService;
-
-import static org.junit.Assert.assertEquals;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -27,18 +24,18 @@ public class SocialMediaWikiApplicationTests {
 	public void contextLoads() {
 	}
 
-	@Test
-	public void addAccountPassingParams() throws Exception {
-
-		Account account = new Account(email, pass, localRole, localRole);
-		account = accountService.save(account);
-
-		assertEquals(account.getEmail(),email);
-//		assertEquals(account.getPassword(),pass);
-//		assertEquals(account.getRole(),role);
-		assertEquals(account.getAuthProvider(),localRole);
-
-	}
+//	@Test
+//	public void addAccountPassingParams() throws Exception {
+//
+//		Account account = new Account(email, pass, localRole, localRole);
+//		account = accountService.save(account);
+//
+//		assertEquals(account.getEmail(),email);
+////		assertEquals(account.getPassword(),pass);
+////		assertEquals(account.getRole(),role);
+//		assertEquals(account.getAuthProvider(),localRole);
+//
+//	}
 
 //	@Test
 //	public void addAccountUsingSetters() throws Exception {

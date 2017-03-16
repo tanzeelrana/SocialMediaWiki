@@ -19,3 +19,54 @@ github:
     clientAuthenticationScheme: form
   resource:
     userInfoUri: https://api.github.com/user
+
+spring:
+  application:
+    name: SocialMediaWiki
+  profiles:
+      # The commented value for `active` can be replaced with valid spring profiles to load.
+      # Otherwise, it will be filled in by maven when building the WAR file
+      # Either way, it can be overridden by `--spring.profiles.active` value passed in the commandline or `-Dspring.profiles.active` set in `JAVA_OPTS`
+      active: prod
+
+  datasource:
+      driverClassName: com.mysql.jdbc.Driver
+      url: jdbc:mysql://sql9.freemysqlhosting.net:3306/sql9164064
+      username: sql9164064
+      password: 4d2LydmE7k
+      continueOnError: true
+      initialize: false
+      initialSize: 0
+      timeBetweenEvictionRunsMillis: 5000
+      minEvictableIdleTimeMillis: 5000
+      minIdle: 0
+
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: none
+      naming_strategy: org.hibernate.cfg.DefaultNamingStrategy
+    properties:
+      hibernate:
+        event.merge.entity_copy_observer: allow
+        enable_lazy_load_no_trans: true
+        dialect: org.hibernate.dialect.MySQL5Dialect
+        hbm2ddl:
+          auto: validate
+        temp:
+          use_jdbc_metadata_defaults: false
+
+#  jpa:
+#    database: MYSQL
+#
+#    properties.hibernate:
+#      ddl-auto: create
+#      enable_lazy_load_no_trans: true
+#
+#  datasource:
+#    url: jdbc:mysql://sql9.freemysqlhosting.net:3306/sql9164064
+#    username: sql9164064
+#    password: 4d2LydmE7k
+#    driver-class-name: com.mysql.jdbc.Driver
+
+#    http://www.phpmyadmin.co/

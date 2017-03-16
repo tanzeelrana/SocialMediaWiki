@@ -1,47 +1,91 @@
 package sudopkill.account;
 
-/**
- * Created by tanzeelrana on 3/5/2017.
- */
-import org.springframework.http.HttpStatus;
-import org.springframework.security.access.annotation.Secured;
-import org.springframework.util.Assert;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 
 import java.security.Principal;
-import java.util.List;
 
-@RestController
+/**
+ * Created by tanzeelrana on 3/10/2017.
+ */
+
+@Controller
 public class AccountController {
 
-    private final AccountRepository accountRepository;
+    @Autowired
+    AccountRepository accountRepository;
 
-    public AccountController(AccountRepository accountRepository) {
-        this.accountRepository = accountRepository;
+    @Autowired
+    AccountService accountService;
+
+    @ModelAttribute("module")
+    String module() {
+        return "account";
     }
 
-    @GetMapping("account/current")
-    @ResponseStatus(value = HttpStatus.OK)
-    @Secured({"ROLE_USER", "ROLE_ADMIN"})
-    public Account currentAccount(Principal principal) {
-        Assert.notNull(principal);
-        return accountRepository.findOneByEmail(principal.getName());
+    @RequestMapping(value = "/account/{userId}", method = RequestMethod.GET)
+    String user(Principal principal, @PathVariable String userId, Model model) {
+        Account user = accountRepository.findOneById(userId);
+        model.addAttribute("id", userId);
+        model.addAttribute("user", user);
+        model.addAttribute("tab","all");
+        return "/account/account";
     }
 
-    @GetMapping("account/{id}")
-    @ResponseStatus(value = HttpStatus.OK)
-    @Secured("ROLE_ADMIN")
-    public Account account(@PathVariable("id") Long id) {
-        return accountRepository.findOne(id);
+    @RequestMapping(value = "/account/{userId}/followers")
+    String followers(Principal principal, @PathVariable String userId, Model model){
+        Account user = accountRepository.findOneById(userId);
+        model.addAttribute("id", userId);
+        model.addAttribute("user", user);
+        model.addAttribute("tab","followers");
+        System.out.println("need to show all the followers for the user id : " + userId);
+        return "/account/account";
     }
 
-    @GetMapping("accounts")
-    @ResponseStatus(value = HttpStatus.OK)
-    @Secured("ROLE_ADMIN")
-    public List<Account> accounts() {
-        return accountRepository.findAll();
+    @RequestMapping(value = "/account/{userId}/following")
+    String following(Principal principal, @PathVariable String userId, Model model){
+        Account user = accountRepository.findOneById(userId);
+        model.addAttribute("id", userId);
+        model.addAttribute("user", user);
+        model.addAttribute("tab","following");
+        System.out.println("need to show all the following for the user id : " + userId);
+        return "/account/account";
+    }
+
+    @RequestMapping(value = "/account/{userId}/pages")
+    String pages(Principal principal, @PathVariable String userId, Model model){
+        Account user = accountRepository.findOneById(userId);
+        model.addAttribute("id", userId);
+        model.addAttribute("user", user);
+        model.addAttribute("tab","pages");
+        System.out.println("need to show all the pages for the user id : " + userId);
+        return "/account/account";
+    }
+
+    @RequestMapping(value = "/account/{userId}/likes")
+    String likes(Principal principal, @PathVariable String userId, Model model){
+        Account user = accountRepository.findOneById(userId);
+        model.addAttribute("id", userId);
+        model.addAttribute("user", user);
+        model.addAttribute("tab","likes");
+        System.out.println("need to show all the likes for the user id : " + userId);
+        return "/account/account";
+    }
+
+    @RequestMapping(value = "/account/{userId}/follow")
+    String follow(Principal principal, @PathVariable String userId, Model model){
+        Account user = accountRepository.findOneById(userId);
+        model.addAttribute("id", userId);
+        model.addAttribute("user", user);
+
+        user.addMyFollower(accountService.getCurrentUser());
+        accountService.update(user);
+
+        return "/account/account";
     }
 }

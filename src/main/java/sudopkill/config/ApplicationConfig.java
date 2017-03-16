@@ -12,7 +12,6 @@ import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 import sudopkill.SocialMediaWikiApplication;
 
 @Configuration
-@PropertySource("classpath:persistence.properties")
 @PropertySource("classpath:messages.properties")
 @ComponentScan(basePackageClasses = SocialMediaWikiApplication.class)
 class ApplicationConfig {

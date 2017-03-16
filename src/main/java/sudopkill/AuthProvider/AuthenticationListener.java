@@ -12,6 +12,7 @@ import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.security.oauth2.provider.OAuth2Request;
 import org.springframework.stereotype.Component;
 import sudopkill.account.Account;
+import sudopkill.account.AccountService;
 import sudopkill.config.ClientResources;
 import sudopkill.config.SecurityConfig;
 import sudopkill.facebook.FacebookAccountService;
@@ -37,15 +38,24 @@ public class AuthenticationListener implements ApplicationListener<InteractiveAu
     @Autowired
     private GithubAccountService githubAccountService;
 
+    @Autowired
+    private AccountService accountService;
+
     @Override
     public void onApplicationEvent(final InteractiveAuthenticationSuccessEvent event) {
         logger.info("$$$$$$$$$ InteractiveAuthenticationSuccessEvent $$$$$$$$$");
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        Account currentUser;
+
         if(!auth.getClass().equals(UsernamePasswordAuthenticationToken.class)){
             OAuth2Request oAuth2Request = ((OAuth2Authentication) auth).getOAuth2Request();
-            Account oAuthUserAccount = getOAuthUserAccount(oAuth2Request, (OAuth2Authentication) auth);
-            logger.info("created local github account !! ");
+            currentUser = getOAuthUserAccount(oAuth2Request, (OAuth2Authentication) auth);
         }
+        System.out.println(auth.getName());
+        currentUser = accountService.getUser(auth.getName());
+        accountService.setCurrentUser(currentUser);
+
+        System.out.println("user name : "+accountService.getCurrentUser().getName());
     }
 
     // return null if no id matched !!
