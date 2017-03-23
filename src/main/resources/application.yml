@@ -31,7 +31,7 @@ spring:
 
   datasource:
       driverClassName: com.mysql.jdbc.Driver
-      url: jdbc:mysql://tanzeelrana.me:3306/socialmediawikiDB_tanzeel
+      url: jdbc:mysql://tanzeelrana.me:3306/socialmediawikiDB_mark
       username: user
       password: pass
       continueOnError: true

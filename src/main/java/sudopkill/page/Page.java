@@ -6,6 +6,11 @@ package sudopkill.page;
         import java.time.Instant;
         import java.util.HashSet;
         import java.util.Set;
+        import java.time.format.DateTimeFormatter;
+        import java.time.format.FormatStyle;
+        import java.util.Locale;
+        import java.time.ZoneId;
+
 
 
 
@@ -118,5 +123,26 @@ public class Page {
     public void setId(long id) {
         this.id = id;
     }
+
+//    public String getDateAndTime() {
+//        DateTimeFormatter formatter =
+//                DateTimeFormatter.ofLocalizedDateTime( FormatStyle.SHORT )
+//                        .withLocale( Locale.UK )
+//                        .withZone( ZoneId.systemDefault() );
+//
+//        return formatter.format(created);
+//    }
+//
+//    public void setDateAndTime() {
+//    }
+//
+//    public int getNumLikes() {
+//        return likes.size();
+//    }
+
+//    public void setNumLikes() {
+//
+//    }
+
 }
 
